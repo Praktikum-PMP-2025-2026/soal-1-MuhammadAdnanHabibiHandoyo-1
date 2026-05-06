@@ -1,47 +1,60 @@
+/** EL2008 Praktikum Pemecahan Masalah dengan Pemrograman 2024/2025
+ *   Modul               : 4 - Dynamic Structures
+ *   Hari dan Tanggal    : Rabu, 6/05/2026
+ *   Nama (NIM)          : Muhammad Adnan Habibi Handoyo/13224093
+ *   Nama File           : soal1-4.c
+ *   Deskripsi           : Program menerima id dan durasi kemudian memberikan output
+ *                         urutan queue dan total durasi
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct Antrian
-{
-    char* id;
+typedef struct Node {
+    char nama[50];
     int durasi;
-}Antrian;
+    struct Node* next;
+} Node;
 
 int main(){
-    Antrian *arr = NULL;
-    int N;
-    int temp=0;
-    int durasi;
-    scanf("%d", &N);
+    int n;
+    scanf("%d",&n);
+    
+    Node *head = NULL;
+    Node *temp = NULL;
 
-    arr = (Antrian* )malloc(N*sizeof(Antrian));
-
-    for(int i=0; i<N; i++){
-        arr[i].id=(char* )malloc(100*sizeof(char));
-        getchar();
-        fgets(arr[i].id, 100, stdin);
-        arr[i].id[strcspn(arr[i].id, "\n")]=0;
-
-        scanf("%d", &durasi);
-        arr[i].durasi = durasi;
-        temp+= durasi;
-    }
-    printf("ORDER ");
-    for(int i=0; i<N; i++){
-        printf("%s", arr[i].id);
-        if(i<N-1){
-            printf(" ");
+    for (int i = 0; i<n; i++){
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        scanf ("%s %d", newNode->nama, &newNode->durasi);
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            temp = newNode;
+        } else {
+            temp->next = newNode;
+            temp = newNode;
         }
     }
-    printf("\n");
 
-    printf("WAIT %d", temp);
+    printf("ORDER");
 
-    for(int i=0;i<N;i++){
-        free(arr[i].id);
+    Node *arr = head;
+    int total = 0;
+    int durasi = 0;
+
+    for (int i = 0; i <n; i++){
+        printf(" %s",arr->nama);
+        total += durasi;
+        durasi += arr->durasi;
+        
+        Node *temp = arr;
+        arr = arr->next;
+        free (temp);
     }
-    free(arr);
 
+    printf("\n");
+    printf("WAIT %d\n",total);
     return 0;
 }
